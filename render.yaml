@@ -1,11 +1,12 @@
 services:
   - type: web
     name: image-link-card
-    runtime: python
+    env: python
+    repo: https://github.com/ahoysoft/image_link_card
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
     envVars:
       - key: BASE_URL
         sync: false
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: "3.11.0"
