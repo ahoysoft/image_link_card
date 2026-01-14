@@ -40,11 +40,11 @@ def index():
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Python">
     <meta name="twitter:description" content="The official home of the Python Programming Language">
-    <meta name="twitter:image" content="{BASE_URL}/images/python-logo.png">
+    <meta name="twitter:image" content="{BASE_URL}/images/python-card.png">
 
     <meta property="og:title" content="Python">
     <meta property="og:description" content="The official home of the Python Programming Language">
-    <meta property="og:image" content="{BASE_URL}/images/python-logo.png">
+    <meta property="og:image" content="{BASE_URL}/images/python-card.png">
     <meta property="og:url" content="{BASE_URL}">
     <meta property="og:type" content="website">
 
