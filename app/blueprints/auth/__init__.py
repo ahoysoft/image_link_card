@@ -19,10 +19,13 @@ def init_oauth(app):
     google_client_secret = app.config.get('GOOGLE_CLIENT_SECRET')
 
     if google_client_id and google_client_secret:
+        import os
+        os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+
         google_bp = make_google_blueprint(
             client_id=google_client_id,
             client_secret=google_client_secret,
-            scope=['email'],
+            scope=['openid', 'https://www.googleapis.com/auth/userinfo.email'],
             redirect_to='auth.google_callback'
         )
         app.register_blueprint(google_bp, url_prefix='/oauth')
