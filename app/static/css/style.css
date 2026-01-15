@@ -158,7 +158,15 @@ body {
 .landing .tagline {
     font-size: 1.25rem;
     color: var(--secondary-color);
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.landing .hero-description {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
 }
 
 .features {

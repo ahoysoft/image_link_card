@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Social Card Service{% endblock %}</title>
+    <title>{% block title %}MetaPeek{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="{{ url_for('index') }}">Social Cards</a>
+            <a href="{{ url_for('index') }}">MetaPeek</a>
         </div>
         <div class="nav-links">
             {% if current_user.is_authenticated %}
@@ -40,7 +40,7 @@
     </main>
 
     <footer class="footer">
-        <p>Social Card Service</p>
+        <p>MetaPeek</p>
     </footer>
 
     {% block extra_scripts %}{% endblock %}
