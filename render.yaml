@@ -1,12 +1,47 @@
+databases:
+  - name: image-link-card-db
+    plan: free
+    databaseName: image_link_card
+    user: app_user
+
 services:
   - type: web
     name: image-link-card
     env: python
     repo: https://github.com/ahoysoft/image_link_card
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    buildCommand: pip install -r requirements.txt && flask db upgrade
+    startCommand: gunicorn wsgi:app
     envVars:
-      - key: BASE_URL
-        sync: false
       - key: PYTHON_VERSION
         value: "3.11.0"
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: image-link-card-db
+          property: connectionString
+      - key: BASE_URL
+        sync: false
+      # R2 Storage (configure in Render dashboard)
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_PUBLIC_URL
+        sync: false
+      # Email (configure in Render dashboard)
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      # Google OAuth (configure in Render dashboard)
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

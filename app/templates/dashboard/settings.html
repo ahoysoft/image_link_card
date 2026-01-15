@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Social Card Service{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Account Settings</h2>
+
+    <div class="settings-section">
+        <h3>Account Information</h3>
+        <table class="settings-table">
+            <tr>
+                <th>Email</th>
+                <td>{{ current_user.email }}</td>
+            </tr>
+            <tr>
+                <th>Tier</th>
+                <td>{{ current_user.tier|title }}</td>
+            </tr>
+            <tr>
+                <th>Monthly Limit</th>
+                <td>{{ current_user.get_monthly_limit() }} cards/month</td>
+            </tr>
+            <tr>
+                <th>Email Verified</th>
+                <td>{{ 'Yes' if current_user.email_verified else 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Member Since</th>
+                <td>{{ current_user.created_at.strftime('%B %d, %Y') }}</td>
+            </tr>
+        </table>
+    </div>
+
+    {% if current_user.password_hash %}
+    <div class="settings-section">
+        <h3>Change Password</h3>
+        <p>Password change functionality coming soon.</p>
+    </div>
+    {% endif %}
+
+    <div class="settings-section">
+        <h3>Connected Accounts</h3>
+        {% if current_user.oauth_accounts.count() > 0 %}
+        <ul>
+            {% for oauth in current_user.oauth_accounts %}
+            <li>{{ oauth.provider|title }} - Connected</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No connected accounts.</p>
+        {% endif %}
+    </div>
+
+    <div class="settings-section danger-zone">
+        <h3>Danger Zone</h3>
+        <p>Account deletion is not yet available. Contact support if you need to delete your account.</p>
+    </div>
+</div>
+{% endblock %}

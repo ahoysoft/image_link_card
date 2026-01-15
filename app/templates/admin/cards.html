@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Cards{% endblock %}
+
+{% block content %}
+<div class="admin">
+    <div class="dashboard-header">
+        <h2>All Cards</h2>
+        <div class="admin-nav">
+            <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Users</a>
+            <a href="{{ url_for('admin.cards') }}" class="btn btn-primary">Cards</a>
+            <a href="{{ url_for('admin.stats') }}" class="btn btn-secondary">Stats</a>
+        </div>
+    </div>
+
+    <form method="GET" class="search-form">
+        <input type="text" name="search" value="{{ search }}" placeholder="Search by title, slug, or user email..." class="form-control">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search %}
+        <a href="{{ url_for('admin.cards') }}" class="btn btn-secondary">Clear</a>
+        {% endif %}
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>User</th>
+                <th>Type</th>
+                <th>Views</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+            <tr>
+                <td>{{ card.title[:40] }}{% if card.title|length > 40 %}...{% endif %}</td>
+                <td><code>{{ card.slug[:12] }}...</code></td>
+                <td>{{ card.user.email }}</td>
+                <td>{{ card.card_type }}</td>
+                <td>{{ card.view_count }}</td>
+                <td>{{ card.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <a href="{{ config.BASE_URL }}/c/{{ card.slug }}" target="_blank" class="btn btn-small btn-secondary">View</a>
+                    <form action="{{ url_for('admin.delete_card', card_id=card.id) }}" method="POST" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this card?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if pagination.pages > 1 %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('admin.cards', page=pagination.prev_num, search=search) }}">&laquo; Previous</a>
+        {% endif %}
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+        {% if pagination.has_next %}
+        <a href="{{ url_for('admin.cards', page=pagination.next_num, search=search) }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

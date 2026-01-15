@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Social Card Service{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h2>Dashboard</h2>
+        <a href="{{ url_for('dashboard.cards_create') }}" class="btn btn-primary">Create Card</a>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Cards</h3>
+            <div class="value">{{ cards_count }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Views</h3>
+            <div class="value">{{ total_views }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>API Keys</h3>
+            <div class="value">{{ api_keys_count }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Monthly Usage</h3>
+            <div class="value">{{ monthly_used }} / {{ monthly_limit }}</div>
+        </div>
+    </div>
+
+    <div class="tier-info">
+        <p>
+            <strong>Current Tier:</strong> {{ current_user.tier|title }}
+            {% if current_user.tier == 'free' %}
+            ({{ monthly_limit }} cards/month)
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="quick-links">
+        <h3>Quick Links</h3>
+        <ul>
+            <li><a href="{{ url_for('dashboard.cards_list') }}">View All Cards</a></li>
+            <li><a href="{{ url_for('dashboard.api_keys') }}">Manage API Keys</a></li>
+            <li><a href="{{ url_for('dashboard.settings') }}">Account Settings</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

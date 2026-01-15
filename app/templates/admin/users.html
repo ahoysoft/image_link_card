@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Users{% endblock %}
+
+{% block content %}
+<div class="admin">
+    <div class="dashboard-header">
+        <h2>User Management</h2>
+        <div class="admin-nav">
+            <a href="{{ url_for('admin.users') }}" class="btn btn-primary">Users</a>
+            <a href="{{ url_for('admin.cards') }}" class="btn btn-secondary">Cards</a>
+            <a href="{{ url_for('admin.stats') }}" class="btn btn-secondary">Stats</a>
+        </div>
+    </div>
+
+    <form method="GET" class="search-form">
+        <input type="text" name="search" value="{{ search }}" placeholder="Search by email..." class="form-control">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search %}
+        <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Clear</a>
+        {% endif %}
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Tier</th>
+                <th>Cards</th>
+                <th>Monthly Usage</th>
+                <th>Verified</th>
+                <th>Admin</th>
+                <th>Joined</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form action="{{ url_for('admin.update_tier', user_id=user.id) }}" method="POST" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <select name="tier" onchange="this.form.submit()">
+                            <option value="free" {% if user.tier == 'free' %}selected{% endif %}>Free</option>
+                            <option value="core" {% if user.tier == 'core' %}selected{% endif %}>Core</option>
+                            <option value="premium" {% if user.tier == 'premium' %}selected{% endif %}>Premium</option>
+                        </select>
+                    </form>
+                </td>
+                <td>{{ user.cards.count() }}</td>
+                <td>{{ user.monthly_card_count }} / {{ user.get_monthly_limit() }}</td>
+                <td>{{ 'Yes' if user.email_verified else 'No' }}</td>
+                <td>
+                    {% if user.is_admin %}
+                    <span class="badge badge-admin">Admin</span>
+                    {% else %}
+                    <span class="badge">User</span>
+                    {% endif %}
+                </td>
+                <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if user.id != current_user.id %}
+                    <form action="{{ url_for('admin.toggle_admin', user_id=user.id) }}" method="POST" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-small {% if user.is_admin %}btn-danger{% else %}btn-secondary{% endif %}">
+                            {% if user.is_admin %}Remove Admin{% else %}Make Admin{% endif %}
+                        </button>
+                    </form>
+                    {% else %}
+                    <span class="text-muted">You</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if pagination.pages > 1 %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('admin.users', page=pagination.prev_num, search=search) }}">&laquo; Previous</a>
+        {% endif %}
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+        {% if pagination.has_next %}
+        <a href="{{ url_for('admin.users', page=pagination.next_num, search=search) }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

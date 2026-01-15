@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Stats{% endblock %}
+
+{% block content %}
+<div class="admin">
+    <div class="dashboard-header">
+        <h2>System Statistics</h2>
+        <div class="admin-nav">
+            <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Users</a>
+            <a href="{{ url_for('admin.cards') }}" class="btn btn-secondary">Cards</a>
+            <a href="{{ url_for('admin.stats') }}" class="btn btn-primary">Stats</a>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Users</h3>
+            <div class="value">{{ total_users }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Verified Users</h3>
+            <div class="value">{{ verified_users }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Cards</h3>
+            <div class="value">{{ total_cards }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Views</h3>
+            <div class="value">{{ total_views }}</div>
+        </div>
+    </div>
+
+    <h3>Users by Tier</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Tier</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Free</td>
+                <td>{{ tier_counts.get('free', 0) }}</td>
+            </tr>
+            <tr>
+                <td>Core</td>
+                <td>{{ tier_counts.get('core', 0) }}</td>
+            </tr>
+            <tr>
+                <td>Premium</td>
+                <td>{{ tier_counts.get('premium', 0) }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

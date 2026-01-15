@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Social Card Service{% endblock %}
+
+{% block content %}
+<div class="auth-form">
+    <h2>Create Account</h2>
+
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control", placeholder="you@example.com") }}
+            {% for error in form.email.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password_confirm.label }}
+            {{ form.password_confirm(class="form-control") }}
+            {% for error in form.password_confirm.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+    </form>
+
+    <div class="auth-divider">
+        <span>or</span>
+    </div>
+
+    <a href="{{ url_for('auth.google_login') }}" class="btn btn-secondary btn-full">
+        Continue with Google
+    </a>
+
+    <div class="auth-links">
+        <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+    </div>
+
+    <p class="tier-info">
+        Free accounts include <strong>5 social cards per month</strong>.
+    </p>
+</div>
+{% endblock %}

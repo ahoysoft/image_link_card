@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Create Card - Social Card Service{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Create New Card</h2>
+
+    <form method="POST" action="{{ url_for('dashboard.cards_create') }}" enctype="multipart/form-data" class="card-form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.image.label }}
+            {{ form.image(class="form-control", accept="image/*") }}
+            {% for error in form.image.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+            <small>Supported formats: JPEG, PNG, GIF, WebP. Max size: 5MB.</small>
+        </div>
+
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control", placeholder="Enter a title for your card") }}
+            {% for error in form.title.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control", rows=3, placeholder="Optional description") }}
+            {% for error in form.description.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.destination_url.label }}
+            {{ form.destination_url(class="form-control", placeholder="https://example.com") }}
+            {% for error in form.destination_url.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+            <small>Where users will be redirected when they click the link.</small>
+        </div>
+
+        <div class="form-group">
+            {{ form.card_type.label }}
+            {{ form.card_type(class="form-control") }}
+            {% for error in form.card_type.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+            <small>Large Image (1200x628) is recommended for most social platforms.</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Card</button>
+            <a href="{{ url_for('dashboard.cards_list') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
