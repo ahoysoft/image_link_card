@@ -70,6 +70,9 @@ def register_blueprints(app):
     app.register_blueprint(cards_bp)
     app.register_blueprint(admin_bp, url_prefix='/admin')
 
+    # Exempt API from CSRF protection (uses API key auth instead)
+    csrf.exempt(api_v1_bp)
+
     # Landing page route
     @app.route('/')
     def index():
